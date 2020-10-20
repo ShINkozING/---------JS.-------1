@@ -54,6 +54,7 @@ $.modal = function(options) {
     const $modal = _createModal(options)
     let closing = false
     let destroyed = false
+    let beforeClosing = true
 
     const modal = {
         open() {
@@ -63,13 +64,15 @@ $.modal = function(options) {
             !closing && $modal.classList.add('open')
         },
         close() {
-            closing = true
-            $modal.classList.remove('open')
-            $modal.classList.add('hide')
-            setTimeout(() =>{
-                $modal.classList.remove('hide')
-                closing = false
-            }, animation_speed)
+            if(beforeClosing) {
+                closing = true
+                $modal.classList.remove('open')
+                $modal.classList.add('hide')
+                setTimeout(() =>{
+                    $modal.classList.remove('hide')
+                    closing = false
+                }, animation_speed)
+            }
         },
     }
 
@@ -92,3 +95,10 @@ $.modal = function(options) {
         }
     })
 }
+
+const openModal = document.querySelector('[data-open]')
+
+openModal.addEventListener('click', () =>{
+    console.log(openModal)
+    modal.open()
+})
